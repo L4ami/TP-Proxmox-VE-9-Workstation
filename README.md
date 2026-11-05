@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > - **Travaux pratiques :** Module 190 · Mettre en place et exploiter une plateforme de virtualisation
-> - **Auteur :** Lami · **Date :** 26 octobre 2026
+> - **Auteur :** Paul Giocanti · **Date :** 26 octobre 2026
 > - **Objectif :** installer l'hyperviseur open source **Proxmox VE 9.2** dans des machines virtuelles VMware Workstation, l'administrer depuis son interface web, puis réunir deux nœuds en cluster.
 
 ---
