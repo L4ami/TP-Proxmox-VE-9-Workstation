@@ -1,28 +1,47 @@
-# Installation de Proxmox VE 9.2 sous VMware Workstation Pro
+# 🖥️ Installer Proxmox VE 9.2 dans VMware Workstation et monter un cluster de deux nœuds
 
-> [!NOTE]
-> - **Travaux pratiques :** Module 190 · Mettre en place et exploiter une plateforme de virtualisation
-> - **Auteur :** Paul Giocanti · **Date :** 26 octobre 2026
-> - **Objectif :** installer l'hyperviseur open source **Proxmox VE 9.2** dans des machines virtuelles VMware Workstation, l'administrer depuis son interface web, puis réunir deux nœuds en cluster.
+![Proxmox VE](https://img.shields.io/badge/Proxmox_VE-9.2-E57000?logo=proxmox&logoColor=white)
+![Debian](https://img.shields.io/badge/base-Debian_13-A81D33?logo=debian&logoColor=white)
+![VMware Workstation](https://img.shields.io/badge/VMware_Workstation_Pro-25H2u1-607078?logo=vmware&logoColor=white)
+![Cluster](https://img.shields.io/badge/cluster-2_n%C5%93uds_%28Corosync%29-1F6FEB)
+![Statut](https://img.shields.io/badge/statut-termin%C3%A9-brightgreen)
+
+> **En une phrase :** j'ai installé l'hyperviseur open source **Proxmox VE 9.2** sur deux machines virtuelles de mon PC portable, je l'ai administré depuis son **interface web**, puis j'ai réuni les deux serveurs en **cluster**.
+
+Ce dépôt est écrit pour être compris **même sans rien connaître** à Proxmox : tous les mots techniques sont expliqués (voir le glossaire en fin de page).
+👉 La même documentation, prête pour HackMD (images en liens absolus) : [`hackmd-TP-Proxmox-VE-9.md`](hackmd-TP-Proxmox-VE-9.md)
+
+> Projet réalisé le 26 octobre 2026 dans le cadre du **module 190** (Mettre en place et exploiter une plateforme de virtualisation), classe E1B, Geneva Institute of Technology (GIT).
+> La suite de ce travail, avec haute disponibilité, stockage partagé et migration à chaud, se trouve dans [ppe-proxmox-cluster-ha](https://github.com/L4ami/ppe-proxmox-cluster-ha).
+
+## ✅ Résultats
+
+| Test | Résultat |
+|---|---|
+| Installation | ✅ Proxmox VE 9.2 installé sur deux VM (4 cœurs, 8 Go de RAM, 64 Go de disque chacune) |
+| Interface web | ✅ administration depuis le navigateur (port 8006) |
+| Mises à jour | ✅ dépôt gratuit *No-Subscription* configuré à la place du dépôt payant *Enterprise* |
+| Cluster | ✅ cluster `tp-cluster` à 2 nœuds (pve01 et pve02) |
+| Réseau | ✅ double adressage IP configuré en ligne de commande, `ping` entre les nœuds : 0 % de perte |
 
 ---
 
-## Sommaire
+## 🗂️ Sommaire
 
-1. [Contexte : ESXi ou Proxmox VE ?](#1-contexte--esxi-ou-proxmox-ve-)
-2. [Environnement de travail](#2-environnement-de-travail)
-3. [Téléchargement de l'ISO](#3-téléchargement-de-liso)
-4. [Création de la machine virtuelle](#4-création-de-la-machine-virtuelle)
-5. [Installation de Proxmox VE](#5-installation-de-proxmox-ve)
-6. [Accès à l'interface web](#6-accès-à-linterface-web)
-7. [Deuxième nœud et cluster](#7-deuxième-nœud-et-cluster)
-8. [Problèmes rencontrés et résolutions](#8-problèmes-rencontrés-et-résolutions)
-9. [Bilan](#9-bilan)
-10. [Glossaire](#10-glossaire)
+1. [Contexte : ESXi ou Proxmox VE ?](#-1-contexte--esxi-ou-proxmox-ve-)
+2. [Environnement de travail](#-2-environnement-de-travail)
+3. [Téléchargement de l'ISO](#-3-téléchargement-de-liso)
+4. [Création de la machine virtuelle](#-4-création-de-la-machine-virtuelle)
+5. [Installation de Proxmox VE](#-5-installation-de-proxmox-ve)
+6. [Accès à l'interface web](#-6-accès-à-linterface-web)
+7. [Deuxième nœud et cluster](#-7-deuxième-nœud-et-cluster)
+8. [Problèmes rencontrés et résolutions](#-8-problèmes-rencontrés-et-résolutions)
+9. [Bilan](#-9-bilan)
+10. [Glossaire](#-10-glossaire)
 
 ---
 
-## 1. Contexte : ESXi ou Proxmox VE ?
+## 📖 1. Contexte : ESXi ou Proxmox VE ?
 
 Comme VMware ESXi (TP précédent), **Proxmox VE** est un **hyperviseur de type 1** : il s'installe directement sur le matériel d'un serveur pour y faire tourner des machines virtuelles.
 
@@ -43,7 +62,7 @@ Comme au TP précédent, Proxmox est installé **dans une VM Workstation** (virt
 
 ---
 
-## 2. Environnement de travail
+## 💻 2. Environnement de travail
 
 | Élément | Valeur |
 |---|---|
@@ -55,7 +74,7 @@ Comme au TP précédent, Proxmox est installé **dans une VM Workstation** (virt
 
 ---
 
-## 3. Téléchargement de l'ISO
+## ⬇️ 3. Téléchargement de l'ISO
 
 L'ISO se télécharge sur la page officielle [proxmox.com → Downloads](https://www.proxmox.com/en/downloads/proxmox-virtual-environment/iso).
 
@@ -64,11 +83,11 @@ L'ISO se télécharge sur la page officielle [proxmox.com → Downloads](https:/
 *Page de téléchargement : on choisit **Proxmox VE 9.2 ISO Installer**, et non la version « For ARM64 ».*
 
 > [!WARNING]
-> Un PC équipé d'un processeur Intel ou AMD utilise l'architecture **x86-64 (amd64)**. L'ISO **arm64** est destinée aux processeurs ARM et ne démarrera pas (voir [section 8](#8-problèmes-rencontrés-et-résolutions)).
+> Un PC équipé d'un processeur Intel ou AMD utilise l'architecture **x86-64 (amd64)**. L'ISO **arm64** est destinée aux processeurs ARM et ne démarrera pas (voir [section 8](#-8-problèmes-rencontrés-et-résolutions)).
 
 ---
 
-## 4. Création de la machine virtuelle
+## 🏗️ 4. Création de la machine virtuelle
 
 **Fichier → Nouvelle machine virtuelle → Personnalisée (avancée)**. Ce mode permet de régler soi-même le processeur, la mémoire, le disque et le réseau.
 
@@ -133,7 +152,7 @@ Contrôleur E/S, type de disque (SCSI) et « Créer un nouveau disque virtuel »
 
 ---
 
-## 5. Installation de Proxmox VE
+## ⚙️ 5. Installation de Proxmox VE
 
 ![Menu de démarrage](captures/09-proxmox-menu-demarrage.png)
 
@@ -185,7 +204,7 @@ Licence (EULA) → **I agree**.
 
 ---
 
-## 6. Accès à l'interface web
+## 🌐 6. Accès à l'interface web
 
 Depuis le **navigateur du PC Windows** : `https://192.168.190.5:8006`
 
@@ -204,7 +223,7 @@ Une fenêtre « No valid subscription » s'affiche à la connexion : l'abonnemen
 
 ---
 
-## 7. Deuxième nœud et cluster
+## 🔗 7. Deuxième nœud et cluster
 
 ### 7.1 Dépôt de mises à jour gratuit
 
@@ -329,7 +348,7 @@ ping -c 3 10.10.10.5
 
 ---
 
-## 8. Problèmes rencontrés et résolutions
+## ⚠️ 8. Problèmes rencontrés et résolutions
 
 ### 8.1 Mauvaise ISO (arm64)
 
@@ -356,7 +375,7 @@ Lors de l'édition, la ligne a d'abord été saisie `adress` (un seul « d »). 
 
 ---
 
-## 9. Bilan
+## 🧠 9. Bilan
 
 | Nœud | VM Workstation | Hostname | IP de gestion | IP secondaire |
 |---|---|---|---|---|
@@ -373,7 +392,7 @@ Lors de l'édition, la ligne a d'abord été saisie `adress` (un seul « d »). 
 
 ---
 
-## 10. Glossaire
+## 📚 10. Glossaire
 
 | Terme | Définition |
 |---|---|
@@ -395,3 +414,18 @@ Lors de l'édition, la ligne a d'abord été saisie `adress` (un seul « d »). 
 | nano | éditeur de texte en ligne de commande |
 | sed | outil qui modifie le contenu d'un fichier en ligne de commande |
 | ping | commande qui teste si une machine répond sur le réseau |
+
+---
+
+## 📁 Contenu du dépôt
+
+| Élément | Contenu |
+|---|---|
+| `README.md` | ce compte-rendu |
+| `hackmd-TP-Proxmox-VE-9.md` | la même documentation, au format HackMD |
+| `captures/` | les captures d'écran du TP (01 à 29, plus trois annexes) |
+
+---
+
+**Auteur :** Paul Giocanti ([@L4ami](https://github.com/L4ami)) · Octobre 2026<br>
+CFC d'informaticien + Bachelor (double certification) · Geneva Institute of Technology
