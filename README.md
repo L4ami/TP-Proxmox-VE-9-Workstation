@@ -8,7 +8,7 @@
 
 > **En une phrase :** j'ai installé l'hyperviseur open source **Proxmox VE 9.2** sur deux machines virtuelles de mon PC portable, je l'ai administré depuis son **interface web**, puis j'ai réuni les deux serveurs en **cluster**.
 
-Ce dépôt est écrit pour être compris **même sans rien connaître** à Proxmox : tous les mots techniques sont expliqués (voir le glossaire en fin de page).
+Ce dépôt est écrit pour être compris **même sans rien connaître** à Proxmox : tous les mots techniques sont expliqués (voir le glossaire en fin de page).<br>
 👉 La même documentation, prête pour HackMD (images en liens absolus) : [`hackmd-TP-Proxmox-VE-9.md`](hackmd-TP-Proxmox-VE-9.md)
 
 > Projet réalisé le 26 octobre 2026 dans le cadre du **module 190** (Mettre en place et exploiter une plateforme de virtualisation), classe E1B, Geneva Institute of Technology (GIT).
@@ -30,12 +30,12 @@ Ce dépôt est écrit pour être compris **même sans rien connaître** à Proxm
 
 1. [Contexte : ESXi ou Proxmox VE ?](#-1-contexte--esxi-ou-proxmox-ve-)
 2. [Environnement de travail](#-2-environnement-de-travail)
-3. [Téléchargement de l'ISO](#-3-téléchargement-de-liso)
-4. [Création de la machine virtuelle](#-4-création-de-la-machine-virtuelle)
-5. [Installation de Proxmox VE](#-5-installation-de-proxmox-ve)
+3. [Téléchargement de l'ISO](#%EF%B8%8F-3-téléchargement-de-liso)
+4. [Création de la machine virtuelle](#%EF%B8%8F-4-création-de-la-machine-virtuelle)
+5. [Installation de Proxmox VE](#%EF%B8%8F-5-installation-de-proxmox-ve)
 6. [Accès à l'interface web](#-6-accès-à-linterface-web)
 7. [Deuxième nœud et cluster](#-7-deuxième-nœud-et-cluster)
-8. [Problèmes rencontrés et résolutions](#-8-problèmes-rencontrés-et-résolutions)
+8. [Problèmes rencontrés et résolutions](#%EF%B8%8F-8-problèmes-rencontrés-et-résolutions)
 9. [Bilan](#-9-bilan)
 10. [Glossaire](#-10-glossaire)
 
@@ -83,7 +83,7 @@ L'ISO se télécharge sur la page officielle [proxmox.com → Downloads](https:/
 *Page de téléchargement : on choisit **Proxmox VE 9.2 ISO Installer**, et non la version « For ARM64 ».*
 
 > [!WARNING]
-> Un PC équipé d'un processeur Intel ou AMD utilise l'architecture **x86-64 (amd64)**. L'ISO **arm64** est destinée aux processeurs ARM et ne démarrera pas (voir [section 8](#-8-problèmes-rencontrés-et-résolutions)).
+> Un PC équipé d'un processeur Intel ou AMD utilise l'architecture **x86-64 (amd64)**. L'ISO **arm64** est destinée aux processeurs ARM et ne démarrera pas (voir [section 8](#%EF%B8%8F-8-problèmes-rencontrés-et-résolutions)).
 
 ---
 
